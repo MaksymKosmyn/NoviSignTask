@@ -1,0 +1,43 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="header :: copy"></head>
+
+<body>
+
+<h1>NoviSign Task - API Server</h1>
+<h3>Overview</h3>
+<ul>
+    <li>This service defines a simple web-application for accessing projects and users
+        data.</li>
+    <li>All the information is fetched via a RESTful
+        interface to a APIService microservice.</li>
+</ul>
+
+<h3>Dashboard</h3>
+
+<ul class="openlist">
+    <li>Eureka Dashboard: <a
+            href="http://localhost:1111">http://localhost:1111</a></li>
+    <li>Check applications registered: <a
+            href="http://localhost:1111/eureka/apps/">http://localhost:1111/eureka/apps/</a></li>
+    <li>Fetch project -> Project1: <a th:href="@{/projects/Project1}">/projects/Project1</a></li>
+</ul>
+
+<h3>Spring Boot URLs</h3>
+<p>Spring Boot provides RESTful URLs for
+    interrogating application (they return JSON format data):</p>
+
+<ul>
+    <li><a th:href="@{/actuator/beans}">The beans</a></li>
+    <li><a th:href="@{/actuator/env}">The environment</a></li>
+    <li><a th:href="@{/actuator/health}">Application health</a></li>
+    <li><a th:href="@{/actuator/mappings}">URL Mappings</a></li>
+    <li><a th:href="@{/actuator}">List of actuator endpoints</a></li>
+</ul>
+
+<div th:replace="footer :: copy"></div>
+
+</body>
+</html>

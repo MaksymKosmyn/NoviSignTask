@@ -1,0 +1,83 @@
+version: "3"
+
+services:
+  # DISCOVERY SERVICE
+  discovery:
+    build:
+      context: ./DiscoveryService
+      dockerfile: Dockerfile
+    ports:
+      - 8761:8761
+    environment:
+      - DISCOVERY_URL=http://discovery:8761
+
+  # SERVICES
+  apiservice:
+    build:
+      context: ./APIService
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      - DISCOVERY_URL=http://discovery:8761
+    links:
+      - discovery
+    depends_on:
+      - discovery
+
+  apiservice_two:
+    build:
+      context: ./APIService
+      dockerfile: Dockerfile
+    ports:
+     - 9080:8080
+    environment:
+      - DISCOVERY_URL=http://discovery:8761
+    links:
+      - discovery
+    depends_on:
+      - discovery
+
+  adminservice:
+    build:
+      context: ./AdminService
+      dockerfile: Dockerfile
+    ports:
+      - 8081:8081
+    environment:
+      - DISCOVERY_URL=http://discovery:8761
+    links:
+      - discovery
+    depends_on:
+      - discovery
+
+  adminservice_two:
+    build:
+      context: ./AdminService
+      dockerfile: Dockerfile
+    ports:
+      - 9081:8081
+    environment:
+      - DISCOVERY_URL=http://discovery:8761
+    links:
+      - discovery
+    depends_on:
+      - discovery
+
+  # API GATEWAY
+  gateway:
+    build:
+      context: ./APIGateway
+      dockerfile: Dockerfile
+    ports:
+      - 8765:8765
+    environment:
+      - DISCOVERY_URL=http://discovery:8761
+    links:
+      - discovery
+      - adminservice
+      - adminservice_two
+      - apiservice
+      - apiservice_two
+    depends_on:
+      - discovery
