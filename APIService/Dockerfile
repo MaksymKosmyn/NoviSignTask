@@ -1,5 +1,6 @@
 FROM openjdk:8-jdk-alpine
 
-ADD target/APIService.jar app.jar
-EXPOSE 8084
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+COPY ./target/APIService-*.jar /api-service/api-service.jar
+WORKDIR /api-service
+EXPOSE 8085
+ENTRYPOINT ["java","-jar","/api-service/api-service.jar"]

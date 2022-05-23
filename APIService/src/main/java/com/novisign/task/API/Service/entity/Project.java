@@ -2,14 +2,15 @@ package com.novisign.task.API.Service.entity;
 
 import com.novisign.task.API.Service.models.ProjectStatus;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "projects")
+@Table(name = "projects", schema = "public")
 public class Project implements Serializable {
 
     private static final long serialVersionUID = 1;
@@ -17,13 +18,10 @@ public class Project implements Serializable {
     public static Long nextId = 0L;
 
     @Id
-    protected Long id;
-
-    @Column(name = "name")
-    protected String name;
-
-    @Column(name = "status")
-    protected String status;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private String name;
+    private String status;
 
     protected static Long getNextId() {
         synchronized (nextId) {

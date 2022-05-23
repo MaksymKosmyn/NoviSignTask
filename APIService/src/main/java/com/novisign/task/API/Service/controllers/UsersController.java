@@ -2,8 +2,10 @@ package com.novisign.task.API.Service.controllers;
 
 import com.novisign.task.API.Service.entity.User;
 import com.novisign.task.API.Service.exception.UserNotFoundException;
-import com.novisign.task.API.Service.repositories.UserRepository;
+import com.novisign.task.API.Service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,20 +21,14 @@ public class UsersController {
     protected Logger logger = Logger.getLogger(UsersController.class
             .getName());
 
-    protected UserRepository userRepository;
-
     @Autowired
-    public UsersController(final UserRepository userRepository) {
-        this.userRepository = userRepository;
-
-        logger.info("ProjectRepository says system has " + userRepository.countUsers() + "users");
-    }
+    private UserService userService;
 
     @GetMapping(path = "/users/login/{login}")
     public User findByName(@PathVariable("login") String login) {
         logger.info("API-service users findByName() invoked: " + login);
 
-        User user = userRepository.findByLoginName(login);
+        User user = userService.findUserByLoginName(login);
 
         logger.info("API-service users findByName() found: " + user);
 
@@ -44,26 +40,20 @@ public class UsersController {
     }
 
     @GetMapping(path = "/users/remove/{login}")
-    public User deleteUserByLogin(@PathVariable("login") String login){
+    public ResponseEntity<User> deleteUserByLogin(@PathVariable("login") String login) {
         logger.info("API-service users deleteUserByLogin() invoked: " + login);
 
-        final User userToDelete = userRepository.findByLoginName(login);
-        User user = userRepository.delete(userToDelete);
+        userService.deleteUserByLoginName(login);
 
-        logger.info("API-service users deleteUserByLogin() found: " + user);
-
-        if (Objects.isNull(user)) {
-            throw new UserNotFoundException("Login -> " + login);
-        } else {
-            return user;
-        }
+        logger.info("API-service users deleteUserByLogin() found: " + login);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(path = "/users/create")
-    public User createUser(@RequestBody User user){
+    public User createUser(@RequestBody User user) {
         logger.info("API-service users createUser() invoked");
 
-        final User savedUser = userRepository.save(user);
+        final User savedUser = userService.createUser(user);
 
         logger.info("API-service users createUser() create a user: " + savedUser.getLoginName());
 

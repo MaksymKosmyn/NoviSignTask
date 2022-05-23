@@ -2,20 +2,23 @@ package com.novisign.task.API.Service.repositories;
 
 import com.novisign.task.API.Service.entity.Project;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@org.springframework.stereotype.Repository
-public interface ProjectRepository extends Repository<Project, Long> {
+@Repository
+public interface ProjectRepository extends CrudRepository<Project, Long> {
 
-    public Project findByName(String name);
+    @Query("SELECT u FROM Project as u WHERE u.fullName =?1 ")
+    Project findByName(String fullName);
 
-    public List<Project> findByStatus(String status);
+    @Query("SELECT u FROM Project as u WHERE u.loginName =?1")
+    Project findByStatus(String loginName);
 
-    public Project save(Project project);
-
-    public Project delete(Project project);
+    @Override
+    @Query("SELECT u FROM Project as u")
+    List<Project> findAll();
 
     @Query("SELECT count(*) from Project ")
     public int countProjects();

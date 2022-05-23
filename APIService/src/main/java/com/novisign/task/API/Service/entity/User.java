@@ -1,13 +1,14 @@
 package com.novisign.task.API.Service.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", schema = "public")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1;
@@ -15,23 +16,11 @@ public class User implements Serializable {
     public static Long nextId = 0L;
 
     @Id
-    protected Long id;
-
-    @Column(name = "full_name")
-    protected String fullName;
-
-    @Column(name = "login_name")
-    protected String loginName;
-
-    @Column(name = "password")
-    protected String password;
-
-//    @ElementCollection
-//    @CollectionTable(
-//            name="projects",
-//            joinColumns=@JoinColumn(name="name")
-//    )
-//    protected List<Project> projects;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private String fullName;
+    private String loginName;
+    private String password;
 
     protected static Long getNextId() {
         synchronized (nextId) {
@@ -48,7 +37,6 @@ public class User implements Serializable {
         this.fullName = fullName;
         this.loginName = loginName;
         this.password = password;
-//        this.projects.add(project);
     }
 
     @Override
@@ -96,12 +84,4 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-
-//    public List<Project> getProjects() {
-//        return projects;
-//    }
-//
-//    public void setProjects(List<Project> projects) {
-//        this.projects = projects;
-//    }
 }
