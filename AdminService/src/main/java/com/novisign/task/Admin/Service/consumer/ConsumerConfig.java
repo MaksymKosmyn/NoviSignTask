@@ -26,7 +26,7 @@ public class ConsumerConfig {
                 BOOTSTRAP_SERVERS);
         props.put(
                 org.apache.kafka.clients.consumer.ConsumerConfig.GROUP_ID_CONFIG,
-                "licenseServerConsumer");
+                "AdminServiceConsumer");
         props.put(
                 org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
                 StringDeserializer.class);
